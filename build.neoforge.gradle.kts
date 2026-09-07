@@ -12,8 +12,14 @@ jsonlang {
     prettyPrint = true
 }
 
+dependencies {
+    implementation("curse.maven:jupiter-${property("deps.jupiter.id")}:${property("deps.jupiter.file")}")
+    implementation("curse.maven:integration-lib-${property("deps.integration.id")}:${property("deps.integration.file")}")
+}
+
 repositories {
     maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
+    maven("https://cursemaven.com") { name = "CurseMaven" }
 }
 
 neoForge {

@@ -1,0 +1,96 @@
+package com.iafenvoy.tooltipsreforged.util;
+
+import com.iafenvoy.tooltipsreforged.TooltipReforgedClient;
+import com.iafenvoy.tooltipsreforged.mixin.KeyBindingAccessor;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
+
+public class TooltipKeyManager {
+    private static final String CATEGORY = "category.%s.keys".formatted(TooltipReforgedClient.MOD_ID);
+    public static final KeyMapping SHOW_SPECIFIC_INFO = new KeyMapping("keybinding.%s.show_specific_info".formatted(TooltipReforgedClient.MOD_ID), InputConstants.KEY_RSHIFT, CATEGORY);
+    public static final KeyMapping SHOW_NBT_SPAWN_EGG = new KeyMapping("keybinding.%s.show_nbt_spawn_egg".formatted(TooltipReforgedClient.MOD_ID), InputConstants.KEY_RALT, CATEGORY);
+    public static final KeyMapping SHOW_ITEM_TAG = new KeyMapping("keybinding.%s.show_item_tag".formatted(TooltipReforgedClient.MOD_ID), InputConstants.KEY_RCONTROL, CATEGORY);
+    private boolean pressing;
+    private Pressed pressed;
+
+    private static InputConstants.Key getBoundKey(KeyMapping binding) {
+        return ((KeyBindingAccessor) binding).getBoundKey();
+    }
+
+    private static boolean pressed(KeyMapping binding) {
+        return !isUnknownKey(binding) && InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), getBoundKey(binding).getValue());
+    }
+
+    private static boolean isUnknownKey(KeyMapping binding) {
+        return getBoundKey(binding) == InputConstants.UNKNOWN;
+    }
+
+    public void renderTick() {
+        if (pressed(SHOW_ITEM_TAG)) {
+            if (!this.pressing) {
+                this.pressed = this.pressed == Pressed.ITEM_TAG ? Pressed.NONE : Pressed.ITEM_TAG;
+                this.pressing = true;
+            }
+        } else if (pressed(SHOW_SPECIFIC_INFO)) {
+            if (!this.pressing) {
+                this.pressed = this.pressed == Pressed.SPECIFIC ? Pressed.NONE : Pressed.SPECIFIC;
+                this.pressing = true;
+            }
+        } else if (pressed(SHOW_NBT_SPAWN_EGG)) {
+            if (!this.pressing) {
+                this.pressed = this.pressed == Pressed.NBT ? Pressed.NONE : Pressed.NBT;
+                this.pressing = true;
+            }
+        } else this.pressing = false;
+    }
+
+    public PressState itemTag() {
+        return isUnknownKey(SHOW_ITEM_TAG) ? PressState.HIDE : this.pressed == Pressed.ITEM_TAG ? PressState.PRESSED : PressState.UNPRESSED;
+    }
+
+    public PressState specific() {
+        return isUnknownKey(SHOW_SPECIFIC_INFO) ? PressState.HIDE : this.pressed == Pressed.SPECIFIC ? PressState.PRESSED : PressState.UNPRESSED;
+    }
+
+    public PressState nbt() {
+        return isUnknownKey(SHOW_NBT_SPAWN_EGG) ? PressState.HIDE : this.pressed == Pressed.NBT ? PressState.PRESSED : PressState.UNPRESSED;
+    }
+
+    public static String itemTagKeyTranslation() {
+        return I18n.get(SHOW_ITEM_TAG.saveString());
+    }
+
+    public static String specificKeyTranslation() {
+        return I18n.get(SHOW_SPECIFIC_INFO.saveString());
+    }
+
+    public static String nbtKeyTranslation() {
+        return I18n.get(SHOW_NBT_SPAWN_EGG.saveString());
+    }
+
+    private enum Pressed {
+        NONE, ITEM_TAG, SPECIFIC, NBT
+    }
+
+    public enum PressState {
+        HIDE(false, false), UNPRESSED(true, false), PRESSED(true, true);
+
+        private final boolean show, showDetail;
+
+        PressState(boolean show, boolean showDetail) {
+            this.show = show;
+            this.showDetail = showDetail;
+        }
+
+        public boolean show() {
+            return this.show;
+        }
+
+        public boolean showDetail() {
+            return this.showDetail;
+        }
+    }
+}
+

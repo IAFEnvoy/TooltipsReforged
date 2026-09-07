@@ -16,6 +16,7 @@ jsonlang {
 
 repositories {
     mavenLocal()
+    maven("https://cursemaven.com") { name = "CurseMaven" }
     maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
     maven("https://maven.terraformersmc.com/") { name = "ModMenu" }
     maven("https://maven.nucleoid.xyz/") { name = "Placeholder API" }
@@ -31,6 +32,8 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric-api")}")
     modImplementation("com.terraformersmc:modmenu:${property("deps.mod_menu")}")
+    modImplementation("curse.maven:jupiter-${property("deps.jupiter.id")}:${property("deps.jupiter.file")}")
+    modImplementation("curse.maven:integration-lib-${property("deps.integration.id")}:${property("deps.integration.file")}")
 }
 
 fabricApi {

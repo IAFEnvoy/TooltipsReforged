@@ -3,6 +3,7 @@ package com.iafenvoy.tooltipsreforged.util;
 //? if >=1.21 {
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
+import com.iafenvoy.tooltipsreforged.TooltipReforgedClient;
 import com.iafenvoy.tooltipsreforged.config.TooltipReforgedConfig;
 import com.mojang.serialization.JsonOps;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +31,11 @@ public final class ComponentsProcessor {
         for (DataComponentType<?> type : stack.getComponents().keySet()) {
             ResourceLocation id = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(type);
             if (id != null && ignored.contains(id.toString())) continue;
-            builder.addAll(processSingle(id, serialize(type, stack, registries)));
+            try {
+                builder.addAll(processSingle(id, serialize(type, stack, registries)));
+            } catch (Exception e) {
+                TooltipReforgedClient.LOGGER.error("Failed to serialize data component {} of stack {}, it will be hidden from the debug tooltip.", id == null ? "<unknown>" : id.toString(), stack, e);
+            }
         }
         return builder.build();
     }

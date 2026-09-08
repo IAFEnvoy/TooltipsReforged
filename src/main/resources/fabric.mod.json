@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_authors}"
+  ],
+  "contact": {
+    "sources": "${mod_repo_url}",
+    "issues": "${mod_repo_url}/issues"
+  },
+  "license": "${mod_license}",
+  "icon": "${mod_logo}",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.iafenvoy.tooltipsreforged._loader.fabric.TooltipReforgedFabricClient"
+    ],
+    "modmenu": [
+      "com.iafenvoy.tooltipsreforged._loader.fabric.compat.ModMenu"
+    ]
+  },
+  "mixins": [
+    "tooltips_reforged.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${minecraft_version_range_fabric}",
+    "jupiter": ">=2.3.7"
+  }
+}

@@ -16,7 +16,7 @@ public class ItemZoomComponent extends StandaloneComponent implements RenderHelp
     }
 
     @Override
-    public void render(GuiGraphics context, Font textRenderer, int x, int y, int z) {
+    public void render(GuiGraphics context, Font textRenderer, int x, int y, int tooltipWidth, int z) {
         if (this.itemDisplayMode.shouldRenderZoom()) {
             int size = TooltipReforgedConfig.INSTANCE.misc.itemZoomSize.getValue();
             int zoomX = context.guiWidth() / 2 - size / 2 - 170 + TooltipReforgedConfig.INSTANCE.misc.itemZoomXOffset.getValue();

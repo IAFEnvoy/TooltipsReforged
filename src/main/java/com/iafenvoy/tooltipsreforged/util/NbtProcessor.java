@@ -1,7 +1,7 @@
 package com.iafenvoy.tooltipsreforged.util;
 
 //? if <1.21 {
-import java.util.LinkedList;
+/*import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,10 +14,10 @@ public final class NbtProcessor {
     public static List<MutableComponent> process(ItemStack stack) {
         List<MutableComponent> list = new LinkedList<>();
         if (!stack.hasTag()) return list;
-        /*
+        /^
             Get the NBT list that we want to show.
             And we set the symbols up where we look for, so we can detect what to give which color.
-         */
+         ^/
         String nbtList = String.valueOf(stack.getTag());
         Pattern p = Pattern.compile("[{}:\"\\[\\],']", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(nbtList);
@@ -26,9 +26,9 @@ public final class NbtProcessor {
         MutableComponent mutableText = Component.empty();
 
 
-        /*  **Loop through the NBT data**
+        /^  **Loop through the NBT data**
          *
-         */
+         ^/
         int lineStep = 50; // config
         ChatFormatting stringColour = ChatFormatting.GREEN;
         ChatFormatting quotationColour = ChatFormatting.DARK_GRAY;
@@ -48,11 +48,11 @@ public final class NbtProcessor {
         while (m.find()) {
             lineAdded = Boolean.FALSE;
 
-            /*  **Checking for single quotation marks**
+            /^  **Checking for single quotation marks**
              *  After that we check if the last char was a single quotation mark we can check that by checking the variable "singleQuotationMark".
              *  We do this so the data between the single quotation marks will get the "stringColour".
              *  And we make sure that the single quotation marks get the "quotationColour".
-             */
+             ^/
             if (nbtList.charAt(m.start()) == '\'') {
                 if (singleQuotationMark.equals(Boolean.FALSE)) { // If false color only the quotation mark
                     mutableText.append(Component.literal(String.valueOf(nbtList.charAt(m.start()))).withStyle(quotationColour));
@@ -67,26 +67,26 @@ public final class NbtProcessor {
             }
 
 
-            /*  **Checking if the text is not between the single quotation mark**
+            /^  **Checking if the text is not between the single quotation mark**
              *  1). When the text is not between the single quotation marks the normal formatting will get to work.
              *  2). We check if the char that is found is an opening bracket.
              *  3). The closing brackets and the comma (these are also the chars that decide when we go to the next line.).
              *  4). Now we check for the colon.
              *  5). And lastly we check for the double quotation marks.
-             */
+             ^/
             if (!singleQuotationMark) {
 
-                /*  2). We check if the char that is found is an opening bracket.
+                /^  2). We check if the char that is found is an opening bracket.
                         Adds the found char and gives it the "separationColour"
                         Stores the lastString and lastIndex
-                 */
+                 ^/
                 if (nbtList.charAt(m.start()) == '{' || nbtList.charAt(m.start()) == '[') {
                     mutableText.append(Component.literal(String.valueOf(nbtList.charAt(m.start()))).withStyle(separationColour));
                     lastString = String.valueOf(nbtList.charAt(m.start()));
                     lastIndex = m.start();
                 }
 
-                /*  3). The closing brackets and the comma (these are also the chars that decide when we go to the next line.).
+                /^  3). The closing brackets and the comma (these are also the chars that decide when we go to the next line.).
                         If the char before the found char is a char that indicates what type of variable the text in front of it is.
                             Then: Add the text before the char that indicates the type and give it the "integerColour".
                                   After that add the char type and give it the "typeColour".
@@ -94,7 +94,7 @@ public final class NbtProcessor {
                         Now we add the found char with the "separationColour" (includes comma's)
                         If the char was a comma add a space (this way it's more readable)
                         Stores the lastString and lastIndex
-                 */
+                 ^/
                 if (nbtList.charAt(m.start()) == '}' || nbtList.charAt(m.start()) == ']' || nbtList.charAt(m.start()) == ',') {
                     if (nbtList.charAt(m.start() - 1) == 's' || nbtList.charAt(m.start() - 1) == 'S' ||
                             nbtList.charAt(m.start() - 1) == 'b' || nbtList.charAt(m.start() - 1) == 'B' ||
@@ -117,14 +117,14 @@ public final class NbtProcessor {
                     lastIndex = m.start();
                 }
 
-                /*  4). Now we check for the colon. (:)
+                /^  4). Now we check for the colon. (:)
                         If the last string doesn't equal the double quotation mark. (when it is between it should only get the "stringColour")
                             Then: Add the text in front of the colon and give it the "fieldColour".
                                   Add the found char and give it the "separationColour".
                                   Add a space so it's easier to read.
                                   Stores the lastString and lastIndex
 
-                 */
+                 ^/
                 if (nbtList.charAt(m.start()) == ':') { // 4).
                     if (!lastString.equals("\"")) {
                         mutableText.append(Component.literal(nbtList.substring(lastIndex + 1, m.start())).withStyle(fieldColour));
@@ -136,7 +136,7 @@ public final class NbtProcessor {
                     }
 
                 }
-                /*  5). And lastly we check for the double quotation marks.
+                /^  5). And lastly we check for the double quotation marks.
                         If the last char was a " too.
                             Then: If the string between the columns is longer then the linesStep
                                 Then: Convert the string between the quotation marks to .... "lstringColour"
@@ -144,7 +144,7 @@ public final class NbtProcessor {
                                 Else: Add the string and give it the "stringColour"
                             Else: Only add the " since it's the first one.
                         Stores the lastString and lastIndex
-                 */
+                 ^/
                 if (nbtList.charAt(m.start()) == '"') {
                     if (lastString.equals("\"")) {
 
@@ -167,12 +167,12 @@ public final class NbtProcessor {
             }
 
 
-            /*  **Checks if the current index is higher than the limit**
+            /^  **Checks if the current index is higher than the limit**
              *  1). We check if the current index is higher than the current line limit.
              *  2). We check if the found char is a closing bracket or comma, since we only go to the next line with those chars.
              *  3). In there we check if we currently are in a single quotation mark area, if so we colour the first part "stringColour".
              *  4). The last thing we do is adding the text to the list and making sure that we go to the next line
-             */
+             ^/
             if (m.start() - removedCharters >= lineLimit) { // 1).
                 if (nbtList.charAt(m.start()) == '}' || nbtList.charAt(m.start()) == ']' || nbtList.charAt(m.start()) == ',') { // 2).
 
@@ -190,19 +190,19 @@ public final class NbtProcessor {
             }
         }
 
-        /*  Add the last line
+        /^  Add the last line
          *  If the line was added just before this.
          *      Then: don't add to the list since otherwise we just add an empty line.
          *      Else: we add the last part to the list too.
-         */
+         ^/
         if (lineAdded.equals(Boolean.FALSE))
             list.add(mutableText);
 
-        /*  Return the final list
+        /^  Return the final list
 
-         */
+         ^/
         return list;
     }
 }
 
-//?}
+*///?}

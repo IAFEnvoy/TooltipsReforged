@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ItemEnchantmentsComponentMixin {
     @Inject(method = "addToTooltip", at = @At("HEAD"), cancellable = true)
     private static void cancelVanillaEnchantmentTooltips(CallbackInfo ci) {
-        if (((EnchantmentsRenderMode) TooltipReforgedConfig.INSTANCE.tooltip.enchantmentTooltip.getValue()).shouldRender())
+        if (TooltipReforgedConfig.INSTANCE.tooltip.enchantmentTooltip.getValue().shouldRender())
             ci.cancel();
     }
 }

@@ -13,8 +13,8 @@ jsonlang {
 }
 
 dependencies {
-    implementation("curse.maven:jupiter-${property("deps.jupiter.id")}:${property("deps.jupiter.file")}")
-    implementation("curse.maven:integration-lib-${property("deps.integration.id")}:${property("deps.integration.file")}")
+    implementation("curse.maven:jupiter-1072905:${property("deps.jupiter")}")
+    implementation("curse.maven:integration-lib-1329917:${property("deps.integration")}")?.let { jarJar(it) }
 }
 
 repositories {
@@ -121,6 +121,7 @@ publishMods {
         projectId = property("publish.curseforge") as String
         accessToken = env.CURSEFORGE_API_KEY.orNull()
         minecraftVersions.addAll(supportedMinecraftVersions)
+        requires("jupiter")
         clientRequired = true
         serverRequired = true
     }

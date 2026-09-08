@@ -1,7 +1,6 @@
 package com.iafenvoy.tooltipsreforged.mixin;
 
 import com.iafenvoy.tooltipsreforged.config.TooltipReforgedConfig;
-import com.iafenvoy.tooltipsreforged.config.mode.ContainerPreviewRenderMode;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

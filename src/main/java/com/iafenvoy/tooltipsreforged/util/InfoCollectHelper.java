@@ -46,18 +46,18 @@ public final class InfoCollectHelper {
     //?}
 
     public static List<String> collectItemTags(ItemStack stack) {
-        return BuiltInRegistries.ITEM.wrapAsHolder(stack.getItem()).tags().map(TagKey::location).map(x -> "#" + x.toString()).toList();
+        return BuiltInRegistries.ITEM.wrapAsHolder(stack.getItem()).tags().map(TagKey::location).map(x -> "#" + x).toList();
     }
 
     public static List<String> collectBlockTags(ItemStack stack) {
         if (stack.getItem() instanceof BlockItem blockItem)
-            return BuiltInRegistries.BLOCK.wrapAsHolder(blockItem.getBlock()).tags().map(TagKey::location).map(x -> "#" + x.toString()).toList();
+            return BuiltInRegistries.BLOCK.wrapAsHolder(blockItem.getBlock()).tags().map(TagKey::location).map(x -> "#" + x).toList();
         else return List.of();
     }
 
     public static List<String> collectEntityTags(ItemStack stack) {
         if (stack.getItem() instanceof SpawnEggItem eggItem)
-            return BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(getSpawnEggType(eggItem, stack)).tags().map(TagKey::location).map(x -> "#" + x.toString()).toList();
+            return BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(getSpawnEggType(eggItem, stack)).tags().map(TagKey::location).map(x -> "#" + x).toList();
         else return List.of();
     }
 
@@ -128,7 +128,7 @@ public final class InfoCollectHelper {
         *///?} else {
         CompoundTag nbt = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY).copyTag();
         //?}
-        if (nbt != null && nbt.contains("LootTable", 8))
+        if (nbt.contains("LootTable", 8))
             return new ObjectLongImmutablePair<>(ResourceLocation.tryParse(nbt.getString("LootTable")), nbt.getLong("LootTableSeed"));
         else return null;
     }
@@ -141,7 +141,7 @@ public final class InfoCollectHelper {
         *///?} else {
         CompoundTag nbt = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY).copyTag();
         //?}
-        if (nbt == null || !nbt.contains("Items", Tag.TAG_LIST)) return null;
+        if (!nbt.contains("Items", Tag.TAG_LIST)) return null;
         //? if <1.21 {
         /*ContainerHelper.loadAllItems(nbt, stacks);
         *///?} else {

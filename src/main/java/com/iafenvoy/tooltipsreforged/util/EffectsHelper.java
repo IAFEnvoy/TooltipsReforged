@@ -11,6 +11,7 @@ import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.alchemy.PotionContents;
 //?}
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public final class EffectsHelper {
         //? if <1.21 {
         /*return PotionUtils.getMobEffects(stack);
         *///?} else {
-        List<MobEffectInstance> effects = new java.util.ArrayList<>();
+        List<MobEffectInstance> effects = new ArrayList<>();
         stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).forEachEffect(effects::add);
         return effects;
         //?}
@@ -64,7 +65,7 @@ public final class EffectsHelper {
         //? if <1.21 {
         /*return food.getEffects().stream().map(pair -> pair.getFirst()).toList();
         *///?} else {
-        return food.effects().stream().map(effect -> effect.effect()).toList();
+        return food.effects().stream().map(FoodProperties.PossibleEffect::effect).toList();
         //?}
     }
 }

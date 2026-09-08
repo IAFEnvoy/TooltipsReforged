@@ -46,7 +46,7 @@ public class TooltipsRenderHelper {
             components.removeIf(x -> x instanceof ClientTextTooltip ordered && ExtendedTextVisitor.getText(TextUtil.getTextFromComponent(ordered)).getString().isEmpty());
         ResolveResult result = resolveTooltips(textRenderer, components);
         Vector2ic position = resolvePosition(result, context, mouseX, mouseY, positioner);
-        TooltipsRenderHelper.drawWithResult(result, stack, context, textRenderer, position.x(), position.y());
+        drawWithResult(result, stack, context, textRenderer, position.x(), position.y());
     }
 
     public static ResolveResult resolveTooltips(Font textRenderer, List<ClientTooltipComponent> components) {

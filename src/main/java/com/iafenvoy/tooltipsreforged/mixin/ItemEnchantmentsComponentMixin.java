@@ -2,7 +2,6 @@ package com.iafenvoy.tooltipsreforged.mixin;
 
 //? if >=1.21 {
 import com.iafenvoy.tooltipsreforged.config.TooltipReforgedConfig;
-import com.iafenvoy.tooltipsreforged.config.mode.EnchantmentsRenderMode;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

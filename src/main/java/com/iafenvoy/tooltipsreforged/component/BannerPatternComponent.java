@@ -26,7 +26,7 @@ public class BannerPatternComponent implements ClientTooltipComponent {
     private final Material texture;
 
     public BannerPatternComponent(ItemStack stack/*? >=1.21 {*/, RegistryAccess registries/*?}*/) {
-        this.texture = this.getTexture(stack/*? >=1.21 {*/, registries/*?}*/);
+        this.texture = getTexture(stack/*? >=1.21 {*/, registries/*?}*/);
     }
 
     @Override

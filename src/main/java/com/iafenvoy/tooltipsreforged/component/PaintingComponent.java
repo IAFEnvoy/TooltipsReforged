@@ -17,6 +17,9 @@ import net.minecraft.world.item.component.CustomData;
 //?}
 
 public class PaintingComponent implements ClientTooltipComponent {
+    // Each block of a painting canvas is a 16x16 texture section, so the motive sprite that
+    // covers the whole canvas is (width * 16) x (height * 16) pixels at native resolution.
+    private static final int TEXTURE_SIZE = 16;
     private final PaintingVariant variant;
     private final int width, height;
 
@@ -27,15 +30,17 @@ public class PaintingComponent implements ClientTooltipComponent {
         CompoundTag nbtCompound = stack.getOrDefault(DataComponents.ENTITY_DATA, CustomData.EMPTY).copyTag();
         //?}
         Painting painting = EntityType.PAINTING.create(Minecraft.getInstance().level);
-        if (nbtCompound != null && painting != null) {
+        if (!nbtCompound.isEmpty() && painting != null) {
             painting.load(nbtCompound.copy());
             this.variant = painting.getVariant().value();
             //? if <1.21 {
-            /*this.width = this.variant.getWidth() * 2;
-            this.height = this.variant.getHeight() * 2;
+            /*// Before 1.21 variants already store their size in texture pixels (16 px per block).
+            this.width = this.variant.getWidth();
+            this.height = this.variant.getHeight();
             *///?} else {
-            this.width = this.variant.width() * 2;
-            this.height = this.variant.height() * 2;
+            // Since 1.21 variants store their size in blocks, convert them to texture pixels.
+            this.width = this.variant.width() * TEXTURE_SIZE;
+            this.height = this.variant.height() * TEXTURE_SIZE;
             //?}
         } else {
             this.variant = null;

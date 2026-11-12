@@ -77,9 +77,10 @@ public class EnchantmentsComponent implements ClientTooltipComponent, RenderHelp
         this.mode = TooltipReforgedConfig.INSTANCE.tooltip.enchantmentTooltip.getValue();
         for (Object2IntMap.Entry<Holder<Enchantment>> entry : component.entrySet()) {
             Holder<Enchantment> enchantment = entry.getKey();
-            String descriptionKey = enchantment.value().description().copy() + ".desc";
             Optional<ResourceKey<Enchantment>> optional = enchantment.unwrapKey();
             if (optional.isEmpty()) continue;
+            // Enchantment description mods use "<description id>.desc" as their translation key.
+            String descriptionKey = optional.get().location().toLanguageKey("enchantment") + ".desc";
             this.enchantments.add(new EnchantmentInfo(enchantment, entry.getIntValue(), optional.get().location(), I18n.exists(descriptionKey) ? TextUtil.splitText(Component.literal(I18n.get(descriptionKey)), 300, Minecraft.getInstance().font) : List.of()));
         }
         this.enchantments.sort(TooltipReforgedConfig.INSTANCE.misc.enchantmentSort.getValue().getComparator());

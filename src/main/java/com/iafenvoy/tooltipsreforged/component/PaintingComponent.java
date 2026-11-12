@@ -30,7 +30,7 @@ public class PaintingComponent implements ClientTooltipComponent {
         CompoundTag nbtCompound = stack.getOrDefault(DataComponents.ENTITY_DATA, CustomData.EMPTY).copyTag();
         //?}
         Painting painting = EntityType.PAINTING.create(Minecraft.getInstance().level);
-        if (!nbtCompound.isEmpty() && painting != null) {
+        if (nbtCompound != null && !nbtCompound.isEmpty() && painting != null) {
             painting.load(nbtCompound.copy());
             this.variant = painting.getVariant().value();
             //? if <1.21 {

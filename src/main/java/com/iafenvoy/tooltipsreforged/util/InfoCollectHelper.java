@@ -128,7 +128,7 @@ public final class InfoCollectHelper {
         *///?} else {
         CompoundTag nbt = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY).copyTag();
         //?}
-        if (nbt.contains("LootTable", 8))
+        if (nbt != null && nbt.contains("LootTable", 8))
             return new ObjectLongImmutablePair<>(ResourceLocation.tryParse(nbt.getString("LootTable")), nbt.getLong("LootTableSeed"));
         else return null;
     }
@@ -141,7 +141,7 @@ public final class InfoCollectHelper {
         *///?} else {
         CompoundTag nbt = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY).copyTag();
         //?}
-        if (!nbt.contains("Items", Tag.TAG_LIST)) return null;
+        if (nbt == null || !nbt.contains("Items", Tag.TAG_LIST)) return null;
         //? if <1.21 {
         /*ContainerHelper.loadAllItems(nbt, stacks);
         *///?} else {

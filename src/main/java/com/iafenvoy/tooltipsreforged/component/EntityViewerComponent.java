@@ -95,7 +95,7 @@ public class EntityViewerComponent extends StandaloneComponent implements Render
             *///?} else {
             CompoundTag nbt = this.stack.getOrDefault(DataComponents.ENTITY_DATA, CustomData.EMPTY).copyTag();
             //?}
-            if (!nbt.isEmpty()) livingEntity.readAdditionalSaveData(nbt);
+            if (nbt != null && !nbt.isEmpty()) livingEntity.readAdditionalSaveData(nbt);
             int frameX = this.getFrameX(context, x, tooltipWidth, 80, -ENTITY_OFFSET - 70);
             this.renderBackground(context, frameX, y, 80, 80, z);
             livingEntity.tick();

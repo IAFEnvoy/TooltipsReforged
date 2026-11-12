@@ -33,6 +33,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.component.SeededContainerLoot;
 //?}
 
 import java.text.DecimalFormat;
@@ -126,12 +127,15 @@ public final class InfoCollectHelper {
     public static ObjectLongPair<ResourceLocation> collectLootTable(ItemStack stack) {
         //? if <1.21 {
         /*CompoundTag nbt = BlockItem.getBlockEntityData(stack);
-        *///?} else {
-        CompoundTag nbt = stack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY).copyTag();
-        //?}
         if (nbt != null && nbt.contains("LootTable", 8))
             return new ObjectLongImmutablePair<>(ResourceLocation.tryParse(nbt.getString("LootTable")), nbt.getLong("LootTableSeed"));
-        else return null;
+        return null;
+        *///?} else {
+        // Since 1.20.5 the loot table of a container item is stored in the "container_loot" component.
+        SeededContainerLoot loot = stack.get(DataComponents.CONTAINER_LOOT);
+        if (loot == null) return null;
+        return new ObjectLongImmutablePair<>(loot.lootTable().location(), loot.seed());
+        //?}
     }
 
     @Nullable

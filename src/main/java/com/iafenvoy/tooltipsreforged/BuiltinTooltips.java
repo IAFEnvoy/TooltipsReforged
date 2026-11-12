@@ -15,6 +15,7 @@ import net.minecraft.core.component.DataComponents;
 //?}
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BannerItem;
 import net.minecraft.world.item.BannerPatternItem;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Equipable;
@@ -92,7 +93,7 @@ public class BuiltinTooltips {
             components.add(new MapComponent(stack));
         if (stack.getItem() instanceof DecorationItemAccessor accessor && accessor.getEntityType() == EntityType.PAINTING)
             components.add(new PaintingComponent(stack));
-        if (stack.getItem() instanceof BannerPatternItem)
+        if (stack.getItem() instanceof BannerPatternItem || stack.getItem() instanceof BannerItem)
             components.add(new BannerPatternComponent(stack/*? if >=1.21 {*/, registries/*?}*/));
         //Debug & Durability
         //? if <1.21 {

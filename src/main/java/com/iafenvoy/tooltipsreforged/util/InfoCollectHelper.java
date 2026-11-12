@@ -32,6 +32,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ItemContainerContents;
 //?}
 
 import java.text.DecimalFormat;
@@ -136,6 +137,15 @@ public final class InfoCollectHelper {
     @Nullable
     public static NonNullList<ItemStack> collectContainer(ItemStack stack/*? >=1.21 {*/, HolderLookup.Provider registries/*?}*/) {
         NonNullList<ItemStack> stacks = NonNullList.withSize(27, ItemStack.EMPTY);
+        //? if >=1.21 {
+        // Since 1.20.5 the contents of container items are stored in the "container" data component
+        // instead of the "Items" tag of the block entity data.
+        ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
+        if (contents != null && contents.nonEmptyStream().findAny().isPresent()) {
+            contents.copyInto(stacks);
+            return stacks;
+        }
+        //?}
         //? if <1.21 {
         /*CompoundTag nbt = BlockItem.getBlockEntityData(stack);
         *///?} else {
